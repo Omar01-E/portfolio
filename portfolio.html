@@ -1,831 +1,603 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Omar El Akrae — Portfolio</title>
+  <title>Omar El Akrae</title>
   <style>
-    /* ── Reset & Base ──────────────────────────────────── */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --bg:       #000000;
-      --bg2:      #080808;
-      --bg3:      #0d0d0d;
-      --card:     #0f0f0f;
-      --border:   #1c1c1c;
-      --cyan:     #00d4ff;
-      --cyan2:    #00a8cc;
-      --purple:   #7c3aed;
-      --green:    #10b981;
-      --text:     #e2e8f0;
-      --muted:    #8892a4;
-      --font:     'Segoe UI', system-ui, -apple-system, sans-serif;
+    /* ── Theme Variables ───────────────────────────────── */
+    :root[data-theme="light"] {
+      --bg:        #fafafe;
+      --bg2:       #f2f0fb;
+      --card:      #ffffff;
+      --border:    #e4e2f4;
+      --text:      #0f172a;
+      --muted:     #64748b;
+      --accent:    #7c3aed;
+      --accent2:   #ec4899;
+      --nav-bg:    rgba(250,250,254,0.92);
+      --tag-bg:    #f1efff;
+      --tag-color: #5b4fcf;
+      --tag-border:#d5d0f5;
+      --icon-bg:   #f1efff;
+      --shadow:    0 2px 16px rgba(124,58,237,0.07);
+      --shadow-hover: 0 12px 40px rgba(124,58,237,0.14);
     }
+    :root[data-theme="dark"] {
+      --bg:        #0d1117;
+      --bg2:       #161b27;
+      --card:      #1e2433;
+      --border:    #2d3448;
+      --text:      #e2e8f0;
+      --muted:     #8892a4;
+      --accent:    #a78bfa;
+      --accent2:   #f472b6;
+      --nav-bg:    rgba(13,17,23,0.92);
+      --tag-bg:    #252840;
+      --tag-color: #a78bfa;
+      --tag-border:#3a3d5c;
+      --icon-bg:   #252840;
+      --shadow:    0 2px 16px rgba(0,0,0,0.25);
+      --shadow-hover: 0 12px 40px rgba(0,0,0,0.4);
+    }
+
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      line-height: 1.7;
+      background: var(--bg); color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.7; transition: background .3s, color .3s;
       overflow-x: hidden;
     }
-    a { color: var(--cyan); text-decoration: none; transition: color .2s; }
-    a:hover { color: #fff; }
+    a { color: var(--accent); text-decoration: none; transition: color .2s; }
 
-    /* ── Scrollbar ──────────────────────────────────────── */
+    /* ── Scrollbar ─────────────────────────────────────── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--cyan2); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-    /* ── Navigation ─────────────────────────────────────── */
+    /* ── Nav ───────────────────────────────────────────── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(0,0,0,.92);
-      backdrop-filter: blur(12px);
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
-      padding: 0 5%;
+      padding: 0 6%; height: 64px;
       display: flex; align-items: center; justify-content: space-between;
-      height: 64px;
     }
     .nav-logo {
-      font-size: 1.2rem; font-weight: 700; letter-spacing: .05em;
-      color: var(--cyan); text-shadow: 0 0 16px var(--cyan);
+      font-family: monospace; font-size: 1.2rem; font-weight: 700;
+      color: var(--text); letter-spacing: .02em;
     }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
     .nav-links a {
-      color: var(--muted); font-size: .9rem; letter-spacing: .04em;
-      text-transform: uppercase; transition: color .2s;
+      color: var(--muted); font-size: .88rem; font-weight:500;
+      padding-bottom: 2px; border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
     }
-    .nav-links a:hover { color: var(--cyan); }
-    .nav-cta {
-      background: transparent;
-      border: 1.5px solid var(--cyan);
-      color: var(--cyan);
-      padding: 6px 18px; border-radius: 6px; font-size: .85rem;
-      cursor: pointer; transition: all .2s;
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--text); border-bottom-color: var(--accent); }
+    .nav-right { display:flex; align-items:center; gap:.65rem; }
+    .btn-resume {
+      display: flex; align-items: center; gap: .4rem;
+      padding: 7px 16px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: var(--card);
+      color: var(--text); font-size: .83rem; font-weight: 600;
+      cursor: pointer; transition: all .2s; white-space: nowrap;
     }
-    .nav-cta:hover { background: var(--cyan); color: var(--bg); }
+    .btn-resume:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-resume svg { width:14px; height:14px; fill:currentColor; flex-shrink:0; }
+    .theme-btn {
+      width:38px; height:38px; border-radius:50%;
+      border:1.5px solid var(--border); background:var(--card);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:1rem; transition:all .2s;
+      color:var(--text);
+    }
+    .theme-btn:hover { border-color:var(--accent); }
 
-    /* ── Hero ───────────────────────────────────────────── */
+    /* ── Hero ──────────────────────────────────────────── */
     #hero {
       min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden; padding: 80px 5% 40px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 80px 6% 60px;
+      position: relative;
     }
-    .hero-grid {
-      position: absolute; inset: 0; z-index: 0;
-      background-image:
-        linear-gradient(rgba(0,212,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,255,.04) 1px, transparent 1px);
-      background-size: 50px 50px;
+    .hero-greeting {
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      font-weight: 800; line-height: 1.08; margin-bottom: 1.1rem;
+      color: var(--text); letter-spacing: -.02em;
     }
-    .hero-glow {
-      position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 400px; z-index: 0;
-      background: radial-gradient(ellipse at center, rgba(0,212,255,.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
-    .hero-badge {
-      display: inline-block; margin-bottom: 1.5rem;
-      background: rgba(0,212,255,.1); border: 1px solid rgba(0,212,255,.3);
-      color: var(--cyan); padding: 6px 16px; border-radius: 20px; font-size: .85rem;
-      letter-spacing: .08em; text-transform: uppercase;
-    }
-    .hero-name {
-      font-size: clamp(2.8rem, 7vw, 5rem);
-      font-weight: 800; line-height: 1.1; margin-bottom: 1rem;
-      background: linear-gradient(135deg, #fff 0%, var(--cyan) 60%, var(--purple) 100%);
+    .name-grad {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .hero-title {
-      font-size: clamp(1rem, 2.5vw, 1.35rem);
-      color: var(--muted); margin-bottom: 1.8rem; font-weight: 400;
+    .hero-sub {
+      font-size: clamp(.95rem, 2vw, 1.1rem);
+      color: var(--muted); margin-bottom: 2.5rem; letter-spacing: .01em;
     }
-    .hero-title span { color: var(--cyan); font-weight: 600; }
-    .hero-desc {
-      font-size: 1.05rem; color: var(--muted); max-width: 600px; margin: 0 auto 2.5rem;
+    .hero-pills {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: .9rem;
+      margin-bottom: 2.8rem;
     }
-    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--cyan); color: var(--bg);
-      padding: 12px 28px; border-radius: 8px; font-weight: 700;
-      font-size: .95rem; transition: all .2s; cursor: pointer; border: none;
-      box-shadow: 0 0 20px rgba(0,212,255,.35);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(0,212,255,.55); color: var(--bg); }
-    .btn-outline {
-      background: transparent; color: var(--cyan);
-      padding: 12px 28px; border-radius: 8px; font-weight: 600;
-      font-size: .95rem; transition: all .2s; cursor: pointer;
-      border: 1.5px solid var(--cyan);
-    }
-    .btn-outline:hover { background: rgba(0,212,255,.1); transform: translateY(-2px); }
-    .hero-stats {
-      display: flex; justify-content: center; gap: 3rem; margin-top: 4rem;
-      padding-top: 2.5rem; border-top: 1px solid var(--border);
-    }
-    .stat-item { text-align: center; }
-    .stat-num { font-size: 2rem; font-weight: 800; color: var(--cyan); }
-    .stat-label { font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-top: .2rem; }
-    .scroll-hint {
-      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      color: var(--muted); font-size: .8rem; display: flex; flex-direction: column;
-      align-items: center; gap: .4rem; animation: bounce 2s infinite;
-    }
-    .scroll-hint::after {
-      content: ''; display: block; width: 1px; height: 40px;
-      background: linear-gradient(var(--cyan), transparent);
-    }
-    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
-
-    /* ── Section Shared ──────────────────────────────────── */
-    section { padding: 96px 5%; }
-    .section-label {
-      font-size: .8rem; letter-spacing: .16em; text-transform: uppercase;
-      color: var(--cyan); margin-bottom: .5rem; font-weight: 600;
-    }
-    .section-title {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      font-weight: 800; margin-bottom: .8rem; color: #fff;
-    }
-    .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 540px; margin-bottom: 3rem; }
-    .section-divider {
-      width: 60px; height: 3px;
-      background: linear-gradient(90deg, var(--cyan), transparent);
-      margin-bottom: 1.5rem; border-radius: 2px;
-    }
-
-    /* ── Skills ──────────────────────────────────────────── */
-    #skills { background: var(--bg2); }
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
-    .skill-card {
+    .hero-pill {
+      display: flex; align-items: center; gap: .5rem;
+      padding: 10px 22px; border-radius: 50px;
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.5rem;
-      transition: border-color .3s, transform .3s;
+      font-size: .88rem; color: var(--text);
+      box-shadow: var(--shadow);
     }
-    .skill-card:hover { border-color: var(--cyan); transform: translateY(-3px); }
-    .skill-card-header {
-      display: flex; align-items: center; gap: .75rem; margin-bottom: 1.2rem;
+    .social-row {
+      display: flex; gap: .7rem; justify-content: center; margin-bottom: 3.5rem;
     }
-    .skill-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; background: rgba(0,212,255,.1); flex-shrink: 0;
+    .social-btn {
+      width:46px; height:46px; border-radius:50%;
+      background:var(--card); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted); transition:all .2s; box-shadow:var(--shadow);
     }
-    .skill-card-title { font-weight: 700; font-size: 1rem; color: #fff; }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .skill-tag {
-      background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
-      color: var(--cyan); padding: 3px 10px; border-radius: 20px; font-size: .78rem;
+    .social-btn:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-3px); }
+    .social-btn svg { width:17px; height:17px; fill:currentColor; }
+    .scroll-cue {
+      display:flex; flex-direction:column; align-items:center; gap:.5rem;
+      color:var(--muted); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
     }
-    .skill-tag.green {
-      background: rgba(16,185,129,.08); border-color: rgba(16,185,129,.2); color: var(--green);
+    .scroll-circle {
+      width:34px; height:34px; border-radius:50%;
+      border:1px solid var(--border); background:var(--card);
+      display:flex; align-items:center; justify-content:center; font-size:.9rem;
+      animation:bob 2s ease-in-out infinite; color:var(--muted);
     }
-    .skill-tag.purple {
-      background: rgba(124,58,237,.12); border-color: rgba(124,58,237,.3); color: #a78bfa;
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+    /* ── Section wrapper ───────────────────────────────── */
+    .sec { padding: 96px 6%; }
+    .sec-inner { max-width: 1100px; margin: 0 auto; }
+    .alt-bg { background: var(--bg2); }
+    .sec-label {
+      font-size:.75rem; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--accent); font-weight:700; margin-bottom:.4rem;
+    }
+    .sec-title {
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight:800; color:var(--text); margin-bottom:2.5rem;
+    }
+    .sec-title .grad {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
     }
 
-    /* ── Experience ──────────────────────────────────────── */
-    #experience { background: var(--bg); }
-    .timeline { position: relative; }
-    .timeline::before {
-      content: ''; position: absolute; left: 16px; top: 6px;
-      bottom: 0; width: 2px;
-      background: linear-gradient(var(--cyan), var(--border), transparent);
-    }
-    .timeline-item { position: relative; padding-left: 52px; margin-bottom: 2.5rem; }
-    .timeline-dot {
-      position: absolute; left: 6px; top: 6px;
-      width: 20px; height: 20px; border-radius: 50%;
-      background: var(--bg); border: 2px solid var(--cyan);
-      box-shadow: 0 0 10px rgba(0,212,255,.4);
-    }
-    .timeline-dot.active { background: var(--cyan); }
+    /* ── Experience ────────────────────────────────────── */
+    .exp-list { display:flex; flex-direction:column; gap:1.5rem; }
     .exp-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.5rem 2rem;
-      transition: border-color .3s;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:16px; padding:2rem;
+      box-shadow:var(--shadow); transition:border-color .3s;
     }
-    .exp-card:hover { border-color: rgba(0,212,255,.4); }
-    .exp-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: .5rem; margin-bottom: .8rem; }
-    .exp-role { font-size: 1.1rem; font-weight: 700; color: #fff; }
-    .exp-company { color: var(--cyan); font-weight: 600; }
+    .exp-card:hover { border-color:var(--accent); }
+    .exp-top {
+      display:flex; align-items:flex-start; justify-content:space-between;
+      flex-wrap:wrap; gap:.5rem; margin-bottom:.2rem;
+    }
+    .exp-role { font-size:1.08rem; font-weight:700; color:var(--text); }
+    .exp-company { color:var(--accent); font-weight:600; font-size:.92rem; margin-bottom:.15rem; }
     .exp-period {
-      background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
-      color: var(--cyan); padding: 3px 12px; border-radius: 20px; font-size: .78rem;
-      white-space: nowrap;
+      background:var(--tag-bg); border:1px solid var(--tag-border);
+      color:var(--tag-color); padding:3px 12px; border-radius:20px;
+      font-size:.75rem; font-weight:600; white-space:nowrap; flex-shrink:0;
     }
-    .exp-location { color: var(--muted); font-size: .85rem; margin-bottom: 1rem; }
-    .exp-bullets { list-style: none; }
+    .exp-loc { color:var(--muted); font-size:.82rem; margin-bottom:.9rem; }
+    .exp-bullets { list-style:none; }
     .exp-bullets li {
-      color: var(--muted); font-size: .95rem; padding: .3rem 0;
-      padding-left: 1.2rem; position: relative;
+      color:var(--muted); font-size:.91rem; padding:.25rem 0 .25rem 1.2rem; position:relative;
     }
-    .exp-bullets li::before {
-      content: '▸'; position: absolute; left: 0; color: var(--cyan);
-    }
+    .exp-bullets li::before { content:'▸'; position:absolute; left:0; color:var(--accent); }
 
-    /* ── Projects ────────────────────────────────────────── */
-    #projects { background: var(--bg2); }
-    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-    .project-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 1.8rem; display: flex; flex-direction: column;
-      transition: transform .3s, border-color .3s, box-shadow .3s;
-      position: relative; overflow: hidden;
+    /* ── Projects ──────────────────────────────────────── */
+    .proj-grid {
+      display: flex; flex-direction: column; gap: 1.8rem;
     }
-    .project-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--cyan), var(--purple));
-      opacity: 0; transition: opacity .3s;
+    .proj-card {
+      border-bottom: 1px solid var(--border); padding-bottom: 1.6rem;
     }
-    .project-card:hover { transform: translateY(-5px); border-color: rgba(0,212,255,.35); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
-    .project-card:hover::before { opacity: 1; }
-    .project-links { margin-top: auto; padding-top: 1.2rem; }
-    .btn-github {
-      display: inline-flex; align-items: center; gap: .45rem;
-      padding: .45rem 1rem; border-radius: 8px; font-size: .82rem; font-weight: 600;
-      background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.3);
-      color: var(--cyan); text-decoration: none; transition: background .2s, border-color .2s, color .2s;
+    .proj-card:last-child { border-bottom: none; }
+    .proj-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 1rem; margin-bottom: .55rem; flex-wrap: wrap;
     }
-    .btn-github:hover { background: rgba(0,212,255,.18); border-color: var(--cyan); color: #fff; }
-    .btn-github svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
-    .project-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; }
-    .project-icon { font-size: 1.8rem; }
-    .project-badge {
-      font-size: .72rem; padding: 3px 10px; border-radius: 20px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .06em;
+    .proj-title-line { font-size: .97rem; line-height: 1.5; }
+    .proj-title-line strong { font-weight: 700; color: var(--text); }
+    .proj-title-line em { font-style: italic; color: var(--muted); }
+    .proj-gh {
+      font-size: .85rem; font-weight: 600; color: var(--accent);
+      text-decoration: underline; white-space: nowrap; flex-shrink: 0;
+      transition: color .2s;
     }
-    .badge-web { background: rgba(0,212,255,.1); color: var(--cyan); border: 1px solid rgba(0,212,255,.2); }
-    .badge-app { background: rgba(124,58,237,.1); color: #a78bfa; border: 1px solid rgba(124,58,237,.2); }
-    .badge-hw  { background: rgba(16,185,129,.1); color: var(--green); border: 1px solid rgba(16,185,129,.2); }
-    .badge-tool{ background: rgba(245,158,11,.1); color: #fbbf24; border: 1px solid rgba(245,158,11,.2); }
-    .project-name { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
-    .project-sub { font-size: .82rem; color: var(--cyan); font-weight: 600; margin-bottom: .75rem; }
-    .project-desc { color: var(--muted); font-size: .9rem; flex: 1; margin-bottom: 1.2rem; }
-    .project-tech { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
-    .tech-tag {
-      background: rgba(255,255,255,.05); border: 1px solid var(--border);
-      color: #cbd5e1; padding: 2px 9px; border-radius: 6px; font-size: .75rem;
+    .proj-gh:hover { color: var(--accent2); }
+    .proj-bullets { list-style: none; }
+    .proj-bullets li {
+      font-size: .92rem; color: var(--muted);
+      padding: .18rem 0 .18rem 1.2rem; position: relative; line-height: 1.6;
     }
-    .project-highlights { list-style: none; margin-bottom: 1.2rem; }
-    .project-highlights li {
-      font-size: .85rem; color: var(--muted); padding: .2rem 0 .2rem 1.1rem; position: relative;
-    }
-    .project-highlights li::before { content: '→'; position: absolute; left: 0; color: var(--cyan); font-size: .75rem; }
+    .proj-bullets li::before { content: '•'; position: absolute; left: 0; color: var(--text); }
+    .proj-bullets strong { color: var(--text); font-weight: 700; }
 
-    /* ── Languages Bar ───────────────────────────────────── */
-    #about { background: var(--bg); }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 1rem; }
-    .about-text strong { color: var(--cyan); }
-    .lang-title { font-weight: 700; margin-bottom: 1.5rem; font-size: 1.1rem; color: #fff; }
-    .lang-item { margin-bottom: 1.1rem; }
-    .lang-row { display: flex; justify-content: space-between; margin-bottom: .35rem; }
-    .lang-name { font-size: .9rem; color: var(--text); font-weight: 600; }
-    .lang-level { font-size: .8rem; color: var(--muted); }
-    .lang-bar { height: 5px; background: var(--border); border-radius: 3px; }
-    .lang-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+    /* ── About ─────────────────────────────────────────── */
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+    .about-text p { color:var(--muted); margin-bottom:1rem; font-size:.96rem; }
+    .about-text strong { color:var(--accent); font-weight:600; }
+    .lang-ttl { font-weight:700; margin-bottom:1.5rem; font-size:1rem; color:var(--text); }
+    .lang-item { margin-bottom:1.1rem; }
+    .lang-row { display:flex; justify-content:space-between; margin-bottom:.35rem; }
+    .lang-name { font-size:.88rem; color:var(--text); font-weight:600; }
+    .lang-lvl { font-size:.78rem; color:var(--muted); }
+    .lang-bar { height:4px; background:var(--border); border-radius:2px; }
+    .lang-fill { height:100%; border-radius:2px; background:linear-gradient(90deg, var(--accent), var(--accent2)); }
 
-    /* ── Contact ─────────────────────────────────────────── */
-    #contact {
-      background: var(--bg2);
-      text-align: center;
+    /* ── Contact ───────────────────────────────────────── */
+    #contact { text-align:center; }
+    .contact-cards { display:flex; justify-content:center; flex-wrap:wrap; gap:1rem; margin-top:2rem; }
+    .cc {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:1.2rem 1.8rem;
+      display:flex; align-items:center; gap:.9rem;
+      min-width:200px; transition:border-color .3s, transform .3s;
+      box-shadow:var(--shadow);
     }
-    #contact .section-sub { margin: 0 auto 3rem; }
-    .contact-cards { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.2rem; }
-    .contact-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.5rem 2rem;
-      display: flex; align-items: center; gap: 1rem;
-      min-width: 220px; transition: border-color .3s, transform .3s;
-      text-align: left;
-    }
-    .contact-card:hover { border-color: var(--cyan); transform: translateY(-3px); }
-    .contact-icon {
-      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
-      background: rgba(0,212,255,.1); border: 1px solid rgba(0,212,255,.2);
-      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-    }
-    .contact-label { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-    .contact-value { font-size: .95rem; color: #fff; font-weight: 600; margin-top: .1rem; }
-    .contact-value a { color: #fff; }
-    .contact-value a:hover { color: var(--cyan); }
+    .cc:hover { border-color:var(--accent); transform:translateY(-2px); }
+    .cc-icon { font-size:1.2rem; }
+    .cc-label { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+    .cc-val { font-size:.88rem; color:var(--text); font-weight:600; }
+    .cc-val a { color:var(--text); }
+    .cc-val a:hover { color:var(--accent); }
 
-    /* ── Footer ──────────────────────────────────────────── */
+    /* ── Footer ────────────────────────────────────────── */
     footer {
-      text-align: center; padding: 2rem 5%;
-      border-top: 1px solid var(--border);
-      color: var(--muted); font-size: .85rem;
+      text-align:center; padding:2rem 6%;
+      border-top:1px solid var(--border);
+      color:var(--muted); font-size:.82rem;
     }
-    footer span { color: var(--cyan); }
+    footer .grad-txt {
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      font-weight:600;
+    }
 
-    /* ── Responsive ──────────────────────────────────────── */
+    /* ── Fade-in ───────────────────────────────────────── */
+    .fi { opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease; }
+    .fi.vis { opacity:1; transform:translateY(0); }
+
+    /* ── Responsive ────────────────────────────────────── */
     @media(max-width:768px){
-      .nav-links { display: none; }
-      .hero-stats { gap: 1.5rem; }
-      .about-grid { grid-template-columns: 1fr; }
-      .timeline::before { left: 8px; }
-      .timeline-dot { left: -2px; }
-      .timeline-item { padding-left: 36px; }
+      .nav-links { display:none; }
+      .about-grid { grid-template-columns:1fr; }
+      .proj-grid { grid-template-columns:1fr; }
     }
-
-    /* ── Fade-in animation ───────────────────────────────── */
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- ─── Navigation ──────────────────────────────────── -->
+  <!-- ─── Nav ──────────────────────────────────────────── -->
   <nav>
-    <div class="nav-logo">Omar El Akrae</div>
+    <div class="nav-logo">&gt;_</div>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
+      <li><a href="#hero" class="active">Home</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
     </ul>
-    <a href="mailto:omarsamy191@gmail.com"><button class="nav-cta">Hire Me</button></a>
+    <div class="nav-right">
+      <a href="https://omar01-e.github.io/My-Cv/" target="_blank" class="btn-resume">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15h8v2H8zm0-4h8v2H8zm0-4h5v2H8z"/></svg>
+        Resume
+      </a>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+    </div>
   </nav>
 
-  <!-- ─── Hero ────────────────────────────────────────── -->
+  <!-- ─── Hero ─────────────────────────────────────────── -->
   <section id="hero">
-    <div class="hero-grid"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-content">
-      <div class="hero-badge">Available for Opportunities</div>
-      <h1 class="hero-name">Omar El Akrae</h1>
-      <p class="hero-title">
-        <span>IT Security &amp; Systems Administrator</span> · Full-Stack Developer · Infrastructure Engineer
-      </p>
-      <p class="hero-desc">
-        Building secure, scalable systems and software — from enterprise infrastructure and automation to full-stack web platforms.
-      </p>
-      <div class="hero-btns">
-        <a href="#projects"><button class="btn-primary">View Projects</button></a>
-        <a href="#contact"><button class="btn-outline">Get In Touch</button></a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-item"><div class="stat-num">7+</div><div class="stat-label">Projects Built</div></div>
-        <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Roles Held</div></div>
-        <div class="stat-item"><div class="stat-num">8+</div><div class="stat-label">Languages &amp; Tools</div></div>
-        <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Spoken Languages</div></div>
-      </div>
+    <div class="fi">
+      <h1 class="hero-greeting">hi, i'm <span class="name-grad">omar</span></h1>
+      <p class="hero-sub">full-stack developer &nbsp;·&nbsp; it security &nbsp;·&nbsp; hardware engineer</p>
     </div>
-    <div class="scroll-hint">Scroll</div>
-  </section>
 
-  <!-- ─── About / Languages ───────────────────────────── -->
-  <section id="about">
-    <div class="fade-in">
-      <p class="section-label">Who I am</p>
-      <h2 class="section-title">About Me</h2>
-      <div class="section-divider"></div>
+    <div class="hero-pills fi">
+      <div class="hero-pill">⚡ Full-Stack Development</div>
+      <div class="hero-pill">🛡️ IT &amp; Security</div>
+      <div class="hero-pill">⚙️ Hardware Design</div>
     </div>
-    <div class="about-grid">
-      <div class="about-text fade-in">
-        <p>
-          I'm a <strong>computer engineering student at Concordia University</strong> based in Montreal, QC — working at the intersection of <strong>IT security, infrastructure, and software development</strong>.
-        </p>
-        <p>
-          Currently administering enterprise-level security systems at Groupe Robert using <strong>Genetec, Citrix, and Active Directory</strong>, while continuing to build personal projects across the full stack — from React/Node.js web platforms to Python visualizers and VHDL hardware designs.
-        </p>
-        <p>
-          I enjoy solving problems at every layer of the stack: networking and systems hardening, automation scripting, and building clean user-facing products.
-        </p>
-        <p>
-          Fluent in 4 languages: <strong>French, English, Arabic</strong>, and intermediate <strong>Turkish</strong> — which comes in handy across diverse teams and clients.
-        </p>
-      </div>
-      <div class="fade-in">
-        <div class="lang-title">🌍 Languages</div>
-        <div class="lang-item">
-          <div class="lang-row"><span class="lang-name">French</span><span class="lang-level">Native</span></div>
-          <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
-        </div>
-        <div class="lang-item">
-          <div class="lang-row"><span class="lang-name">English</span><span class="lang-level">Fluent</span></div>
-          <div class="lang-bar"><div class="lang-fill" style="width:95%"></div></div>
-        </div>
-        <div class="lang-item">
-          <div class="lang-row"><span class="lang-name">Arabic</span><span class="lang-level">Fluent</span></div>
-          <div class="lang-bar"><div class="lang-fill" style="width:93%"></div></div>
-        </div>
-        <div class="lang-item">
-          <div class="lang-row"><span class="lang-name">Turkish</span><span class="lang-level">Intermediate</span></div>
-          <div class="lang-bar"><div class="lang-fill" style="width:50%"></div></div>
-        </div>
-      </div>
+
+    <div class="social-row fi">
+      <!-- Email -->
+      <a href="mailto:omarsamy191@gmail.com" class="social-btn" title="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+      <!-- Phone -->
+      <a href="tel:+15145162557" class="social-btn" title="Phone">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      </a>
+      <!-- GitHub -->
+      <a href="https://github.com/Omar01-E" target="_blank" class="social-btn" title="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com/in/omar-el-akrae" target="_blank" class="social-btn" title="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <!-- Resume -->
+      <a href="https://omar01-e.github.io/My-Cv/" target="_blank" class="social-btn" title="Resume">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15h8v2H8zm0-4h8v2H8zm0-4h5v2H8z"/></svg>
+      </a>
+    </div>
+
+    <div class="scroll-cue fi">
+      <div class="scroll-circle">↓</div>
+      <span>Scroll to explore</span>
     </div>
   </section>
 
-  <!-- ─── Skills ──────────────────────────────────────── -->
-  <section id="skills">
-    <div class="fade-in">
-      <p class="section-label">What I know</p>
-      <h2 class="section-title">Technical Skills</h2>
-      <div class="section-divider"></div>
-      <p class="section-sub">A broad toolkit spanning software, systems, and hardware.</p>
-    </div>
-    <div class="skills-grid">
-      <div class="skill-card fade-in">
-        <div class="skill-card-header">
-          <div class="skill-icon">💻</div>
-          <div class="skill-card-title">Programming Languages</div>
-        </div>
-        <div class="skill-tags">
-          <span class="skill-tag">Java</span>
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">C / C++</span>
-          <span class="skill-tag">JavaScript</span>
-          <span class="skill-tag">SQL</span>
-          <span class="skill-tag">Bash</span>
-          <span class="skill-tag">PowerShell</span>
-          <span class="skill-tag">Assembly</span>
-          <span class="skill-tag">VHDL</span>
-        </div>
-      </div>
-      <div class="skill-card fade-in">
-        <div class="skill-card-header">
-          <div class="skill-icon">🌐</div>
-          <div class="skill-card-title">Web & Full-Stack</div>
-        </div>
-        <div class="skill-tags">
-          <span class="skill-tag">React</span>
-          <span class="skill-tag">React Native</span>
-          <span class="skill-tag">Node.js</span>
-          <span class="skill-tag">Express</span>
-          <span class="skill-tag">MongoDB</span>
-          <span class="skill-tag">Socket.io</span>
-          <span class="skill-tag">Firebase</span>
-          <span class="skill-tag">Stripe API</span>
-          <span class="skill-tag">JWT Auth</span>
-        </div>
-      </div>
-      <div class="skill-card fade-in">
-        <div class="skill-card-header">
-          <div class="skill-icon">🛡️</div>
-          <div class="skill-card-title">Systems & Security</div>
-        </div>
-        <div class="skill-tags">
-          <span class="skill-tag green">Linux</span>
-          <span class="skill-tag green">Active Directory</span>
-          <span class="skill-tag green">SCCM</span>
-          <span class="skill-tag green">Citrix</span>
-          <span class="skill-tag green">Genetec</span>
-          <span class="skill-tag green">Access Control</span>
-          <span class="skill-tag green">Incident Response</span>
-        </div>
-      </div>
-      <div class="skill-card fade-in">
-        <div class="skill-card-header">
-          <div class="skill-icon">⚡</div>
-          <div class="skill-card-title">Hardware & Low-Level</div>
-        </div>
-        <div class="skill-tags">
-          <span class="skill-tag purple">VHDL</span>
-          <span class="skill-tag purple">Digital Logic Design</span>
-          <span class="skill-tag purple">Assembly</span>
-          <span class="skill-tag purple">Circuit Simulation</span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ─── Experience ────────────────────────────────────── -->
+  <div class="sec alt-bg" id="experience">
+    <div class="sec-inner">
+      <p class="sec-label fi">Where I've worked</p>
+      <h2 class="sec-title fi">Experience</h2>
+      <div class="exp-list">
 
-  <!-- ─── Experience ───────────────────────────────────── -->
-  <section id="experience">
-    <div class="fade-in">
-      <p class="section-label">Where I've worked</p>
-      <h2 class="section-title">Work Experience</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="timeline">
-
-      <div class="timeline-item fade-in">
-        <div class="timeline-dot active"></div>
-        <div class="exp-card">
-          <div class="exp-header">
+        <div class="exp-card fi">
+          <div class="exp-top">
             <div>
               <div class="exp-role">IT Security &amp; Systems Administrator</div>
               <div class="exp-company">Groupe Robert</div>
             </div>
             <span class="exp-period">May 2025 – Present</span>
           </div>
-          <div class="exp-location">📍 Montreal, QC</div>
+          <div class="exp-loc">📍 Montreal, QC</div>
           <ul class="exp-bullets">
-            <li>Administer and monitor Genetec enterprise security systems across multiple facilities.</li>
-            <li>Operate IT infrastructure using Citrix and internal platforms to maintain system availability.</li>
-            <li>Manage access control, alarms, and incident response workflows to strengthen security posture.</li>
-            <li>Lead system upgrade and automation initiatives to improve operational efficiency.</li>
+            <li>Developed PowerShell and Python automation scripts to streamline user provisioning and endpoint configuration across 10+ facilities via Citrix and SCCM, reducing manual overhead by 30%.</li>
+            <li>Diagnosed and resolved system-level bugs and configuration issues across Windows/Linux environments; maintained database integrity and monitored infrastructure health using Genetec and SCCM.</li>
+            <li>Led software deployments, patch cycles, and infrastructure upgrades across enterprise systems; built alerting pipelines to detect and escalate anomalies before they impacted operations.</li>
           </ul>
         </div>
-      </div>
 
-      <div class="timeline-item fade-in">
-        <div class="timeline-dot"></div>
-        <div class="exp-card">
-          <div class="exp-header">
+        <div class="exp-card fi">
+          <div class="exp-top">
             <div>
               <div class="exp-role">Platform &amp; Infrastructure Intern</div>
               <div class="exp-company">Vidéotron</div>
             </div>
             <span class="exp-period">Jan 2025 – May 2025</span>
           </div>
-          <div class="exp-location">📍 Montreal, QC</div>
+          <div class="exp-loc">📍 Montreal, QC</div>
           <ul class="exp-bullets">
-            <li>Designed and implemented automation scripts in PowerShell and Bash to streamline deployments, monitoring, and patch management.</li>
-            <li>Managed enterprise infrastructure (Active Directory, SCCM), applying engineering practices for scalability, reliability, and security hardening.</li>
-            <li>Contributed to the Windows 11 migration initiative, providing technical support to maintain secure and efficient rollouts.</li>
-            <li>Integrated monitoring tools with custom scripts to detect anomalies, improving system availability and reducing incidents.</li>
+            <li>Built PowerShell and Bash automation scripts for deployments, monitoring, and patch management, reducing manual intervention across enterprise systems.</li>
+            <li>Managed Active Directory and SCCM; led workstation imaging for Windows 11 migration and integrated alerting scripts that cut incident response time by 40%.</li>
+            <li>Supported Cisco network infrastructure and VLAN configuration across branch sites; documented changes to improve team onboarding and operational continuity.</li>
           </ul>
         </div>
-      </div>
 
-      <div class="timeline-item fade-in">
-        <div class="timeline-dot"></div>
-        <div class="exp-card">
-          <div class="exp-header">
+        <div class="exp-card fi">
+          <div class="exp-top">
             <div>
               <div class="exp-role">Full-Stack Developer</div>
               <div class="exp-company">Concordia Student Union</div>
             </div>
             <span class="exp-period">Sep 2024 – Dec 2024</span>
           </div>
-          <div class="exp-location">📍 Montreal, QC</div>
+          <div class="exp-loc">📍 Montreal, QC</div>
           <ul class="exp-bullets">
-            <li>Built cross-platform event management systems used by 200+ students, improving registration workflows and notification delivery.</li>
-            <li>Developed mobile features using React Native and web components with ReactJS, integrated with a Node.js / Firebase backend.</li>
+            <li>Built a cross-platform event management system (React + React Native) for 200+ students with real-time Socket.io updates, Firebase back-end, and JWT-secured REST APIs.</li>
+            <li>Designed a responsive UI with Tailwind CSS; optimized Firebase queries reducing load times by 35%.</li>
           </ul>
         </div>
-      </div>
 
+      </div>
     </div>
-  </section>
+  </div>
 
-  <!-- ─── Projects ─────────────────────────────────────── -->
-  <section id="projects">
-    <div class="fade-in">
-      <p class="section-label">What I've built</p>
-      <h2 class="section-title">Projects</h2>
-      <div class="section-divider"></div>
-      <p class="section-sub">A mix of full-stack apps, dev tools, and hardware projects.</p>
+  <!-- ─── Projects ──────────────────────────────────────── -->
+  <div class="sec" id="projects">
+    <div class="sec-inner">
+      <p class="sec-label fi">What I've built</p>
+      <h2 class="sec-title fi">Projects</h2>
+      <div class="proj-grid">
+
+        <!-- Drive with Omar -->
+        <div class="proj-card fi">
+          <div class="proj-header">
+            <span class="proj-title-line"><strong>Drive with Omar — Montreal Traffic Intelligence Agent</strong> &mdash; <em>JavaScript, Leaflet.js, HTML/CSS</em></span>
+            <a class="proj-gh" href="https://github.com/Omar01-E/drive-with-omar" target="_blank">GitHub</a>
+          </div>
+          <ul class="proj-bullets">
+            <li>Built a real-time AI traffic routing agent for Montreal comparing <strong>3 routes</strong> via multi-factor scoring including traffic, signals, incidents, and rush-hour conditions with <strong>sub-100ms</strong> rescoring every 12 seconds.</li>
+            <li>Deployed <strong>35+ geolocation-tagged</strong> incident markers using STM/MTQ road data, covering accidents, construction zones, and traffic signals for urban navigation research.</li>
+          </ul>
+        </div>
+
+        <!-- ShopNova -->
+        <div class="proj-card fi">
+          <div class="proj-header">
+            <span class="proj-title-line"><strong>ShopNova — Full-Stack E-Commerce Platform</strong> &mdash; <em>React 18, Node.js, Express, MongoDB, Stripe, JWT, Tailwind CSS</em></span>
+            <a class="proj-gh" href="https://github.com/Omar01-E/ecommerce-platform" target="_blank">GitHub</a>
+          </div>
+          <ul class="proj-bullets">
+            <li>Production-ready store with product catalogue, cart, <strong>Stripe</strong> checkout, <strong>JWT</strong> auth &amp; order history; <strong>15+ REST API</strong> endpoints, seeded MongoDB database, and fully responsive UI.</li>
+            <li>Implemented secure <strong>JWT</strong> authentication with protected routes and <strong>Stripe webhook</strong> handling for reliable order fulfillment and payment confirmation.</li>
+          </ul>
+        </div>
+
+        <!-- Event Manager -->
+        <div class="proj-card fi">
+          <div class="proj-header">
+            <span class="proj-title-line"><strong>Event Manager — Real-Time Event Management System</strong> &mdash; <em>React, React Native, Node.js, Socket.io, Firebase, JWT</em></span>
+            <a class="proj-gh" href="https://github.com/Omar01-E" target="_blank">GitHub</a>
+          </div>
+          <ul class="proj-bullets">
+            <li>Built a cross-platform system for <strong>200+ students</strong> with real-time <strong>Socket.io</strong> updates, Firebase back-end, and JWT-secured REST APIs.</li>
+            <li>Designed responsive UI with <strong>Tailwind CSS</strong>; optimized Firebase queries reducing load times by <strong>35%</strong>.</li>
+          </ul>
+        </div>
+
+        <!-- VHDL -->
+        <div class="proj-card fi">
+          <div class="proj-header">
+            <span class="proj-title-line"><strong>VHDL Digital Logic Library</strong> &mdash; <em>VHDL, Digital Logic, GHDL/ModelSim, Web Showcase</em></span>
+            <a class="proj-gh" href="https://github.com/Omar01-E/vhdl-counters-registers-web-demo" target="_blank">GitHub</a>
+          </div>
+          <ul class="proj-bullets">
+            <li>Designed <strong>BCD counter, LFSR, ring counter, up/down counter</strong> &amp; universal shift register (SISO/SIPO/PISO/PIPO) with testbenches and an interactive web-based waveform viewer.</li>
+            <li>Verified all modules with simulation-driven testbenches in <strong>GHDL</strong>; packaged waveform outputs into a static web showcase for portfolio demonstration.</li>
+          </ul>
+        </div>
+
+        <!-- Auto Snake -->
+        <div class="proj-card fi">
+          <div class="proj-header">
+            <span class="proj-title-line"><strong>Auto Snake — Browser Game with AI</strong> &mdash; <em>HTML, CSS, JavaScript, Canvas API</em></span>
+            <a class="proj-gh" href="https://github.com/Omar01-E/snake-game" target="_blank">GitHub</a>
+          </div>
+          <ul class="proj-bullets">
+            <li>Manual and AI autopilot modes; AI uses <strong>BFS pathfinding</strong> + <strong>flood-fill</strong> trap avoidance to maximize score — runs fully in-browser with no dependencies.</li>
+          </ul>
+        </div>
+
+        <!-- Sorting Visualizer -->
+        <div class="proj-card fi">
+          <div class="proj-header">
+            <span class="proj-title-line"><strong>Sorting Algorithms Visualizer</strong> &mdash; <em>Python, Pygame</em></span>
+            <a class="proj-gh" href="https://github.com/Omar01-E/sorting-visualizer" target="_blank">GitHub</a>
+          </div>
+          <ul class="proj-bullets">
+            <li>Animates <strong>Bubble, Insertion, Selection, Merge &amp; Quick Sort</strong> with live comparison/swap counters, adjustable speed control, and color-coded bar states for educational use.</li>
+          </ul>
+        </div>
+
+        <!-- LLM Leaderboard -->
+        <div class="proj-card fi">
+          <div class="proj-header">
+            <span class="proj-title-line"><strong>LLM Leaderboard Web Platform</strong> &mdash; <em>React, Python/<strong>Flask</strong>, <strong>PostgreSQL</strong>, AWS, Supabase</em></span>
+            <a class="proj-gh" href="https://github.com/siabench/LLM-Leaderboard" target="_blank">GitHub</a>
+          </div>
+          <ul class="proj-bullets">
+            <li>Built low-latency leaderboards with normalized <strong>PostgreSQL</strong> schema and tuned aggregations; query time &lt; <strong>200ms</strong>.</li>
+            <li>Implemented CI/CD with <strong>GitHub Actions</strong> to <strong>AWS EC2</strong>; scheduled backups on <strong>Supabase</strong>.</li>
+          </ul>
+        </div>
+
+        <!-- SplitEase -->
+        <div class="proj-card fi">
+          <div class="proj-header">
+            <span class="proj-title-line"><strong>SplitEase — Bill Splitter</strong> &mdash; <em>HTML, CSS, JavaScript</em></span>
+            <a class="proj-gh" href="https://github.com/Omar01-E/bill-splitter" target="_blank">GitHub</a>
+          </div>
+          <ul class="proj-bullets">
+            <li>Zero-dependency web app for group bill splitting with per-person totals, tip percentage, and tax handling; deployed as a <strong>single-file app</strong> with no build step required.</li>
+          </ul>
+        </div>
+
+      </div>
     </div>
-    <div class="projects-grid">
+  </div>
 
-      <!-- ShopNova -->
-      <div class="project-card fade-in">
-        <div class="project-header">
-          <div class="project-icon">🛒</div>
-          <span class="project-badge badge-web">Full-Stack</span>
+  <!-- ─── About ─────────────────────────────────────────── -->
+  <div class="sec alt-bg" id="about">
+    <div class="sec-inner">
+      <p class="sec-label fi">Who I am</p>
+      <h2 class="sec-title fi">About Me</h2>
+      <div class="about-grid">
+        <div class="about-text fi">
+          <p>I'm a <strong>computer engineering student at Concordia University</strong> based in Montreal — working at the intersection of <strong>IT security, infrastructure, and software development</strong>.</p>
+          <p>Currently administering enterprise security systems at <strong>Groupe Robert</strong> using Genetec, Citrix, and Active Directory, while continuing to build personal projects across the full stack.</p>
+          <p>I enjoy solving problems at every layer: from <strong>networking and systems hardening</strong> to automation scripting and shipping clean user-facing products.</p>
+          <p>Fluent in 4 languages: <strong>French, English, Arabic</strong>, and conversational <strong>Turkish</strong>.</p>
         </div>
-        <div class="project-name">ShopNova</div>
-        <div class="project-sub">Full-Stack E-Commerce Platform</div>
-        <p class="project-desc">A modern, feature-complete e-commerce platform with product browsing, cart management, Stripe payments, user auth, and order tracking.</p>
-        <div class="project-tech">
-          <span class="tech-tag">React 18</span>
-          <span class="tech-tag">Node.js</span>
-          <span class="tech-tag">Express</span>
-          <span class="tech-tag">MongoDB</span>
-          <span class="tech-tag">Stripe</span>
-          <span class="tech-tag">JWT</span>
-          <span class="tech-tag">Tailwind CSS</span>
-        </div>
-        <ul class="project-highlights">
-          <li>Product grid with search &amp; category filtering</li>
-          <li>Full checkout flow with Stripe integration (test mode)</li>
-          <li>JWT auth with httpOnly cookies &amp; order history</li>
-          <li>Dark navy/blue responsive UI</li>
-        </ul>
-        <div class="project-links">
-          <a class="btn-github" href="https://github.com/Omar01-E/ecommerce-platform" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>View on GitHub</a>
-        </div>
-      </div>
-
-      <!-- Event Manager -->
-      <div class="project-card fade-in">
-        <div class="project-header">
-          <div class="project-icon">📅</div>
-          <span class="project-badge badge-web">Real-Time App</span>
-        </div>
-        <div class="project-name">Event Manager</div>
-        <div class="project-sub">Real-Time Event Management System</div>
-        <p class="project-desc">A cross-platform event management application with real-time updates via WebSockets, used at Concordia to streamline event registration for 200+ students.</p>
-        <div class="project-tech">
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">React Native</span>
-          <span class="tech-tag">Node.js</span>
-          <span class="tech-tag">Express</span>
-          <span class="tech-tag">Socket.io</span>
-          <span class="tech-tag">Firebase</span>
-        </div>
-        <ul class="project-highlights">
-          <li>Real-time event updates via Socket.io WebSockets</li>
-          <li>Web + mobile clients sharing one backend</li>
-          <li>Deployed at Concordia Student Union</li>
-        </ul>
-        <div class="project-links">
-          <a class="btn-github" href="https://github.com/Omar01-E" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>View on GitHub</a>
-        </div>
-      </div>
-
-      <!-- Snake Game -->
-      <div class="project-card fade-in">
-        <div class="project-header">
-          <div class="project-icon">🐍</div>
-          <span class="project-badge badge-web">Browser Game</span>
-        </div>
-        <div class="project-name">Auto Snake Game</div>
-        <div class="project-sub">Browser Game with AI Autopilot</div>
-        <p class="project-desc">Classic Snake playable in the browser with both manual and AI-driven autopilot mode. The AI uses BFS pathfinding to chase food and flood-fill to avoid traps.</p>
-        <div class="project-tech">
-          <span class="tech-tag">HTML</span>
-          <span class="tech-tag">CSS</span>
-          <span class="tech-tag">JavaScript</span>
-          <span class="tech-tag">Canvas API</span>
-        </div>
-        <ul class="project-highlights">
-          <li>Manual (Arrow/WASD) and Auto mode toggle</li>
-          <li>BFS pathfinding + flood-fill trap avoidance</li>
-          <li>Dark neon UI with glowing canvas</li>
-        </ul>
-        <div class="project-links">
-          <a class="btn-github" href="https://github.com/Omar01-E/snake-game" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>View on GitHub</a>
-        </div>
-      </div>
-
-      <!-- Sorting Visualizer -->
-      <div class="project-card fade-in">
-        <div class="project-header">
-          <div class="project-icon">📊</div>
-          <span class="project-badge badge-app">Desktop App</span>
-        </div>
-        <div class="project-name">Sorting Visualizer</div>
-        <div class="project-sub">Interactive Algorithm Visualization Tool</div>
-        <p class="project-desc">A Python desktop app that lets you type in an array and watch it sorted step-by-step with color-coded animations, live swap/comparison counters, and speed control.</p>
-        <div class="project-tech">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">Pygame</span>
-        </div>
-        <ul class="project-highlights">
-          <li>5 algorithms: Bubble, Insertion, Selection, Merge, Quick Sort</li>
-          <li>Live comparisons &amp; swaps counter</li>
-          <li>Speed slider + keyboard controls ([, ], Space)</li>
-          <li>Color-coded bars: blue → red (active) → green (sorted)</li>
-        </ul>
-        <div class="project-links">
-          <a class="btn-github" href="https://github.com/Omar01-E/sorting-visualizer" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>View on GitHub</a>
-        </div>
-      </div>
-
-      <!-- Bill Splitter -->
-      <div class="project-card fade-in">
-        <div class="project-header">
-          <div class="project-icon">💸</div>
-          <span class="project-badge badge-tool">Web App</span>
-        </div>
-        <div class="project-name">SplitEase</div>
-        <div class="project-sub">Smart Bill Splitter</div>
-        <p class="project-desc">A clean web tool to fairly split bills among groups. Add people, enter items, assign who ordered what, and get instant per-person totals including tax and tip.</p>
-        <div class="project-tech">
-          <span class="tech-tag">HTML</span>
-          <span class="tech-tag">CSS</span>
-          <span class="tech-tag">JavaScript</span>
-        </div>
-        <ul class="project-highlights">
-          <li>Step-by-step guided flow: people → items → summary</li>
-          <li>Handles unequal splits and shared items</li>
-          <li>Zero dependencies, runs fully in-browser</li>
-        </ul>
-        <div class="project-links">
-          <a class="btn-github" href="https://github.com/Omar01-E/bill-splitter" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>View on GitHub</a>
-        </div>
-      </div>
-
-      <!-- Pomodoro Clock -->
-      <div class="project-card fade-in">
-        <div class="project-header">
-          <div class="project-icon">⏱️</div>
-          <span class="project-badge badge-tool">Web App</span>
-        </div>
-        <div class="project-name">Pomodoro Clock</div>
-        <div class="project-sub">Focus Timer with SVG Ring</div>
-        <p class="project-desc">A clean Pomodoro focus timer with animated SVG ring progress, switchable Focus / Short Break / Long Break modes, and session tracking.</p>
-        <div class="project-tech">
-          <span class="tech-tag">HTML</span>
-          <span class="tech-tag">CSS</span>
-          <span class="tech-tag">JavaScript</span>
-          <span class="tech-tag">SVG</span>
-        </div>
-        <ul class="project-highlights">
-          <li>Focus, Short Break, Long Break mode switcher</li>
-          <li>Animated SVG ring progress indicator</li>
-          <li>Session counter to track productivity</li>
-        </ul>
-        <div class="project-links">
-          <a class="btn-github" href="https://github.com/Omar01-E/pomodoro-clock" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>View on GitHub</a>
-        </div>
-      </div>
-
-      <!-- VHDL -->
-      <div class="project-card fade-in">
-        <div class="project-header">
-          <div class="project-icon">⚙️</div>
-          <span class="project-badge badge-hw">Hardware</span>
-        </div>
-        <div class="project-name">VHDL Counters &amp; Registers</div>
-        <div class="project-sub">Digital Logic Design Library</div>
-        <p class="project-desc">A comprehensive collection of VHDL hardware modules designed and simulated for digital logic coursework — counters, shift registers, and more.</p>
-        <div class="project-tech">
-          <span class="tech-tag">VHDL</span>
-          <span class="tech-tag">Digital Logic</span>
-          <span class="tech-tag">GHDL / ModelSim</span>
-        </div>
-        <ul class="project-highlights">
-          <li>BCD counter (standard + Mealy-based)</li>
-          <li>Universal shift register (SISO/SIPO/PISO/PIPO)</li>
-          <li>LFSR counter, ring counter, up/down counter</li>
-          <li>Full testbench simulations for each module</li>
-        </ul>
-        <div class="project-links">
-          <a class="btn-github" href="https://github.com/Omar01-E/vhdl-counters-registers-web-demo" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>View on GitHub</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─── Contact ──────────────────────────────────────── -->
-  <section id="contact">
-    <div class="fade-in">
-      <p class="section-label">Let's connect</p>
-      <h2 class="section-title">Get In Touch</h2>
-      <div class="section-divider" style="margin:0 auto 1rem;"></div>
-      <p class="section-sub">Open to internships, full-time roles, and interesting projects.</p>
-    </div>
-    <div class="contact-cards fade-in">
-      <div class="contact-card">
-        <div class="contact-icon">✉️</div>
-        <div>
-          <div class="contact-label">Email</div>
-          <div class="contact-value"><a href="mailto:omarsamy191@gmail.com">omarsamy191@gmail.com</a></div>
-        </div>
-      </div>
-      <div class="contact-card">
-        <div class="contact-icon">💼</div>
-        <div>
-          <div class="contact-label">LinkedIn</div>
-          <div class="contact-value"><a href="https://linkedin.com/in/omar-el-akrae-533016335" target="_blank">linkedin.com/in/omar-el-akrae</a></div>
-        </div>
-      </div>
-      <div class="contact-card">
-        <div class="contact-icon">🐙</div>
-        <div>
-          <div class="contact-label">GitHub</div>
-          <div class="contact-value"><a href="https://github.com/Omar01-E" target="_blank">github.com/Omar01-E</a></div>
-        </div>
-      </div>
-      <div class="contact-card">
-        <div class="contact-icon">📱</div>
-        <div>
-          <div class="contact-label">Phone</div>
-          <div class="contact-value">+1 (514) 516-2557</div>
+        <div class="fi">
+          <div class="lang-ttl">🌍 Languages</div>
+          <div class="lang-item">
+            <div class="lang-row"><span class="lang-name">French</span><span class="lang-lvl">Native</span></div>
+            <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-row"><span class="lang-name">English</span><span class="lang-lvl">Fluent</span></div>
+            <div class="lang-bar"><div class="lang-fill" style="width:95%"></div></div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-row"><span class="lang-name">Arabic</span><span class="lang-lvl">Fluent</span></div>
+            <div class="lang-bar"><div class="lang-fill" style="width:93%"></div></div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-row"><span class="lang-name">Turkish</span><span class="lang-lvl">Conversational</span></div>
+            <div class="lang-bar"><div class="lang-fill" style="width:40%"></div></div>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- ─── Footer ───────────────────────────────────────── -->
+  <!-- ─── Contact ───────────────────────────────────────── -->
+  <div class="sec" id="contact" style="text-align:center;">
+    <div class="sec-inner">
+      <p class="sec-label fi">Let's connect</p>
+      <h2 class="sec-title fi">Get In Touch</h2>
+      <div class="contact-cards">
+        <div class="cc fi">
+          <span class="cc-icon">✉️</span>
+          <div><div class="cc-label">Email</div><div class="cc-val"><a href="mailto:omarsamy191@gmail.com">omarsamy191@gmail.com</a></div></div>
+        </div>
+        <div class="cc fi">
+          <span class="cc-icon">📱</span>
+          <div><div class="cc-label">Phone</div><div class="cc-val"><a href="tel:+15145162557">+1 (514) 516-2557</a></div></div>
+        </div>
+        <a class="cc fi" href="https://github.com/Omar01-E" target="_blank" style="color:inherit;">
+          <span class="cc-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="var(--text)"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg></span>
+          <div><div class="cc-label">GitHub</div><div class="cc-val">Omar01-E</div></div>
+        </a>
+        <a class="cc fi" href="https://linkedin.com/in/omar-el-akrae" target="_blank" style="color:inherit;">
+          <span class="cc-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#0a66c2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
+          <div><div class="cc-label">LinkedIn</div><div class="cc-val">Omar El Akrae</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Footer ────────────────────────────────────────── -->
   <footer>
-    <p>Built by <span>Omar El Akrae</span> · 2026 · Montreal, QC</p>
+    Built by <span class="grad-txt">Omar El Akrae</span> · Computer Engineering @ Concordia · Montreal, QC
   </footer>
 
-  <!-- ─── JS: Scroll animations ────────────────────────── -->
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    // ── Theme toggle ──
+    function toggleTheme() {
+      const html = document.documentElement;
+      const btn  = document.getElementById('themeBtn');
+      if (html.getAttribute('data-theme') === 'light') {
+        html.setAttribute('data-theme', 'dark');
+        btn.textContent = '☀️';
+      } else {
+        html.setAttribute('data-theme', 'light');
+        btn.textContent = '🌙';
+      }
+    }
 
-    // Nav active link highlight
-    const sections = document.querySelectorAll('section[id]');
+    // ── Fade-in on scroll ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fi').forEach(el => observer.observe(el));
+
+    // ── Active nav link ──
+    const sections = document.querySelectorAll('[id]');
     const navLinks = document.querySelectorAll('.nav-links a');
     window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(s => {
-        if (window.scrollY >= s.offsetTop - 100) current = s.id;
-      });
+      let cur = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
       navLinks.forEach(a => {
-        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--cyan)' : '';
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + cur) a.classList.add('active');
       });
     });
   </script>
